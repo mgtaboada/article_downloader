@@ -1,4 +1,4 @@
 * Downloader
   A small library for downloading the content of internet articles
-** TODO
+** TODO To be done
    Allow to fetch urls from any iterable
