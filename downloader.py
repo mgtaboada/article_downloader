@@ -70,11 +70,11 @@ class ArticleMultiSaver:
         self.lock = threading.Lock()
 
     def worker(self, urls, downloader):
-        'urls is a generator'
+        'urls is a iterator'
         while True:
             with self.lock:
                 try:
-                    url = urls.send(None)
+                    url = next(urls)
                 except:
                     return
             i = self.i
@@ -85,9 +85,10 @@ class ArticleMultiSaver:
                 f.write(text)
 
     def download_urls(self, urls):
-        'urls is a generator'
+        'urls is an iterable'
+        url_iter = iter(urls)
         threads = [threading.Thread(target=self.worker, args=(
-            urls, downloader)) for downloader in self.downloaders]
+            url_iter, downloader)) for downloader in self.downloaders]
         for t in threads:
             t.start()
         for t in threads:
